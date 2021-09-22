@@ -5,7 +5,7 @@ import { IngredientsModule } from './ingredients/ingredients.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://admin:admin@cluster0.93lhl.mongodb.net/test',
+      'mongodb+srv://admin:*****@cluster0.93lhl.mongodb.net/test',
     ),
     UsersModule,
     IngredientsModule,
