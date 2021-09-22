@@ -7,7 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
 
   create(createUserDto: CreateUserDto) {
     const user = new this.userModel(createUserDto);
@@ -20,6 +20,10 @@ export class UsersService {
 
   findOne(id: string) {
     return this.userModel.findById(id);
+  }
+
+  async findByUsername(username: string) {
+    return (await this.userModel.findOne({ username }).exec());
   }
 
   updateOne(id: string, updateUserDto: UpdateUserDto) {
