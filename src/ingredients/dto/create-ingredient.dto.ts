@@ -1,5 +1,4 @@
-export interface Ingredient {
-  id?: string;
+export class CreateIngredientDto {
   name: string;
   quantity: number;
   measurement: string;
