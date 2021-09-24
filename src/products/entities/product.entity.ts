@@ -1,8 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { Ingredient } from 'src/ingredients/entities/ingredient.entity';
-
 import * as mongoose from 'mongoose'
+import { Type } from 'class-transformer';
+import { Validate, ValidateNested } from 'class-validator';
+
+import { Ingredient } from 'src/ingredients/entities/ingredient.entity';
+// import { IngredientExistsValidation } from '../products.validation';
+
+
 
 export type ProductDocument = Product & Document;
 
@@ -14,11 +18,26 @@ export class Product {
   @Prop()
   image: string;
 
+  // @Validate(IngredientExistsValidation)
+  @ValidateNested({ each: true })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' })
-  ingredients: Ingredient
+  @Type(() => Ingredient)
+  ingredients: Ingredient[];
 
   @Prop({ required: true })
   quantity: number;
+
+  @Prop()
+  created_at: string;
+
+  @Prop()
+  created_by: string;
+
+  // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  // @Type(() => User)
+  // created_by: User
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
+
+

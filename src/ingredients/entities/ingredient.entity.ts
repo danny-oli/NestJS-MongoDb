@@ -16,6 +16,12 @@ export class Ingredient {
 
   @Prop()
   value: number;
+
+  @Prop()
+  created_at: string;
+
+  @Prop()
+  created_by: string;
 }
 
 export const IngredientSchema = SchemaFactory.createForClass(Ingredient);

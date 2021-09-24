@@ -7,46 +7,59 @@ import {
   Param,
   Delete,
   UseGuards,
+  BadRequestException,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
+import { Product } from './entities/product.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) { }
+  constructor(
+    private readonly productsService: ProductsService,
+  ) { }
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
+
+    try {
+      return await this.productsService.create(createProductDto);
+    } catch (error) {
+      throw new BadRequestException(error);
+
+    }
+
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  async findAll(): Promise<Product[]> {
+    return await this.productsService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<Product> {
+    return await this.productsService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  updateOne(
+  async updateOne(
     @Param('id') id: string,
     @Body() updateProductsDto: UpdateProductDto,
-  ) {
-    return this.productsService.updateOne(id, updateProductsDto);
+  ): Promise<Product> {
+    return await this.productsService.updateOne(id, updateProductsDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  deleteOne(@Param('id') id: string) {
+  async deleteOne(@Param('id') id: string): Promise<any> {
     return this.productsService.deleteOne(id);
   }
 }

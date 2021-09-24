@@ -12,5 +12,6 @@ import { Ingredient, IngredientSchema } from './entities/ingredient.entity';
   ],
   controllers: [IngredientsController],
   providers: [IngredientsService],
+  exports: [IngredientsService]
 })
-export class IngredientsModule {}
+export class IngredientsModule { }

@@ -12,6 +12,7 @@ import { IngredientsService } from './ingredients.service';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { IngredientDocument } from './entities/ingredient.entity';
 
 @Controller('ingredients')
 export class IngredientsController {
@@ -19,33 +20,34 @@ export class IngredientsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createIngredientDto: CreateIngredientDto) {
-    return this.ingredientsService.create(createIngredientDto);
+  async create(@Body() createIngredientDto: CreateIngredientDto): Promise<IngredientDocument> {
+    return await this.ingredientsService.create(createIngredientDto);
   }
+
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.ingredientsService.findAll();
+  async findAll(): Promise<IngredientDocument[]> {
+    return await this.ingredientsService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ingredientsService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<IngredientDocument> {
+    return await this.ingredientsService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateIngredientDto: UpdateIngredientDto,
-  ) {
-    return this.ingredientsService.updateOne(id, updateIngredientDto);
+  ): Promise<IngredientDocument>{
+    return await this.ingredientsService.updateOne(id, updateIngredientDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<any>{
     return this.ingredientsService.deleteOne(id);
   }
 }

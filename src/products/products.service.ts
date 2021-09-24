@@ -9,30 +9,37 @@ import { UpdateProductDto } from './dto/update-product.dto';
 export class ProductsService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
-  ) {}
+  ) { }
 
-  create(createProductDto: CreateProductDto) {
-    const user = new this.productModel(createProductDto);
-    return user.save();
+  async create(createProductDto: CreateProductDto): Promise<ProductDocument> {
+    try {
+      const user = new this.productModel(createProductDto);
+      await user.populate('ingredients').execPopulate();
+
+      return user.save();
+    } catch (error) {
+
+    }
+
   }
 
-  findAll() {
-    return this.productModel.find();
+  async findAll(): Promise<ProductDocument[]> {
+    return await this.productModel.find();
   }
 
-  findOne(id: string) {
-    return this.productModel.findById(id);
+  async findOne(id: string): Promise<ProductDocument> {
+    return await this.productModel.findById(id);
   }
 
-  updateOne(id: string, updateProductDto: UpdateProductDto) {
-    return this.productModel.findByIdAndUpdate(
+  async updateOne(id: string, updateProductDto: UpdateProductDto): Promise<ProductDocument> {
+    return await this.productModel.findByIdAndUpdate(
       { _id: id },
       { $set: updateProductDto },
       { new: true },
     );
   }
 
-  deleteOne(id: string) {
-    return this.productModel.deleteOne({ _id: id }).exec();
+  async deleteOne(id: string): Promise<any> {
+    return await this.productModel.deleteOne({ _id: id }).exec();
   }
 }

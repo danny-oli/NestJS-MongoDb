@@ -10,30 +10,30 @@ export class IngredientsService {
   constructor(
     @InjectModel(Ingredient.name)
     private ingredientModel: Model<IngredientDocument>,
-  ) {}
+  ) { }
 
-  create(createIngredientsDto: CreateIngredientDto) {
+  async create(createIngredientsDto: CreateIngredientDto): Promise<IngredientDocument> {
     const user = new this.ingredientModel(createIngredientsDto);
-    return user.save();
+    return await user.save();
   }
 
-  findAll() {
-    return this.ingredientModel.find();
+  async findAll(): Promise<IngredientDocument[]> {
+    return await this.ingredientModel.find();
   }
 
-  findOne(id: string) {
-    return this.ingredientModel.findById(id);
+  async findOne(id: string): Promise<IngredientDocument> {
+    return await this.ingredientModel.findById(id);
   }
 
-  updateOne(id: string, updateIngredientDto: UpdateIngredientDto) {
-    return this.ingredientModel.findByIdAndUpdate(
+  async updateOne(id: string, updateIngredientDto: UpdateIngredientDto): Promise<IngredientDocument> {
+    return await this.ingredientModel.findByIdAndUpdate(
       { _id: id },
       { $set: updateIngredientDto },
       { new: true },
     );
   }
 
-  deleteOne(id: string) {
-    return this.ingredientModel.deleteOne({ _id: id }).exec();
+  async deleteOne(id: string): Promise<any> {
+    return await this.ingredientModel.deleteOne({ _id: id }).exec();
   }
 }
