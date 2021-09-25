@@ -1,7 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Exclude } from 'class-transformer';
 import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
+
 
 @Schema()
 export class User {
@@ -12,6 +14,9 @@ export class User {
   username: string;
 
   @Prop()
+
+
+  @Exclude({ toPlainOnly: true })
   password: string;
 }
 

@@ -17,6 +17,7 @@ import { Product } from './entities/product.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 
+
 @Controller('products')
 export class ProductsController {
   constructor(
@@ -26,12 +27,10 @@ export class ProductsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
-
     try {
       return await this.productsService.create(createProductDto);
     } catch (error) {
       throw new BadRequestException(error);
-
     }
 
   }
@@ -49,6 +48,12 @@ export class ProductsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('/available/:id')
+  async productAvailable(@Param('id') id: string): Promise<Boolean> {
+    return await this.productsService.productAvailable(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async updateOne(
     @Param('id') id: string,
@@ -62,4 +67,6 @@ export class ProductsController {
   async deleteOne(@Param('id') id: string): Promise<any> {
     return this.productsService.deleteOne(id);
   }
+
+
 }

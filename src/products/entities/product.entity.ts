@@ -22,13 +22,16 @@ export class Product {
   @ValidateNested({ each: true })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' })
   @Type(() => Ingredient)
-  ingredients: Ingredient[];
+  ingredients: Ingredient;
 
   @Prop({ required: true })
   quantity: number;
 
   @Prop()
-  created_at: string;
+  total_price: number;
+
+  @Prop({ type: Date, default: Date.now })
+  created_at: Date;
 
   @Prop()
   created_by: string;

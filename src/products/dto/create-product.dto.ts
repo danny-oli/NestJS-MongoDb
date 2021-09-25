@@ -1,4 +1,5 @@
 import { IsString, IsInt } from 'class-validator';
+import { Ingredient } from 'src/ingredients/entities/ingredient.entity';
 
 export class CreateProductDto {
   @IsString()
@@ -8,13 +9,10 @@ export class CreateProductDto {
   image: string;
 
   @IsString()
-  ingredients: string;
+  ingredients: Ingredient;
 
   @IsInt()
   quantity: number;
-
-  @IsString()
-  created_at: string;
 
   @IsString()
   created_by: string;

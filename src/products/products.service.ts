@@ -13,10 +13,9 @@ export class ProductsService {
 
   async create(createProductDto: CreateProductDto): Promise<ProductDocument> {
     try {
-      const user = new this.productModel(createProductDto);
-      await user.populate('ingredients').execPopulate();
-
-      return user.save();
+      const product = new this.productModel(createProductDto);
+      await product.populate('ingredients').execPopulate();
+      return await product.save();
     } catch (error) {
 
     }
@@ -24,7 +23,11 @@ export class ProductsService {
   }
 
   async findAll(): Promise<ProductDocument[]> {
-    return await this.productModel.find();
+    const products = await this.productModel.find().populate('ingredients');
+    products.forEach(product => {
+      product.ingredients.value ? product.total_price = product.ingredients.value : 'Invalid Ingredient Code'
+    });
+    return products
   }
 
   async findOne(id: string): Promise<ProductDocument> {
@@ -42,4 +45,12 @@ export class ProductsService {
   async deleteOne(id: string): Promise<any> {
     return await this.productModel.deleteOne({ _id: id }).exec();
   }
+
+  async productAvailable(id: string): Promise<Boolean> {
+    var productAvailable = false;
+    const product = await this.productModel.findById(id).populate('ingredients').exec();
+    product.ingredients.quantity > 0 ? productAvailable = true : productAvailable = false;
+    return productAvailable;
+  }
+
 }
