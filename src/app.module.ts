@@ -1,20 +1,27 @@
-import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
+
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './users/users.module';
-import { IngredientsModule } from './ingredients/ingredients.module';
-import { ProductsModule } from './products/products.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from './config/config.module';
+import { ConfigService } from './config/config.service';
+import { UsersModule } from './users/users.module';
+import { ProductsModule } from './products/products.module';
+import { IngredientsModule } from './ingredients/ingredients.module';
+
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://admin:admin@cluster0.93lhl.mongodb.net/test',
-    ),
+    ConfigModule,
+    MongooseModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => configService.getMongoConfig(),
+    }),
     MulterModule.registerAsync({
       useFactory: () => ({
         dest: './images',
       }),
     }),
+    ConfigModule,
     AuthModule,
     UsersModule,
     IngredientsModule,

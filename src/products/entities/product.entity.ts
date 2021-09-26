@@ -25,7 +25,7 @@ export class Product {
   ingredients: Ingredient[];
 
   @Prop()
-  total_price: number;
+  value: number;
 
   @Prop({ type: Date, default: Date.now })
   created_at: Date;

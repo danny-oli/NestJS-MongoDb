@@ -10,4 +10,7 @@ export class CreateProductDto {
 
   @IsString()
   image_file_name: string;
+  
+  @IsInt()
+  value: number;
 }

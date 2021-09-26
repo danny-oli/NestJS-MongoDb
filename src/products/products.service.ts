@@ -30,14 +30,13 @@ export class ProductsService {
 
   async findAll(): Promise<ProductDocument[]> {
     const products = await this.productModel.find().populate('ingredients');
-    console.log(products)
     products.forEach(product => {
       product.ingredients.forEach(ingredient => {
-        ingredient.value ? product.total_price = ingredient.value : 'Invalid Ingredient Code.'
+        product.value += ingredient.value //not working?
       })
     });
-    if (products.length > 0) return products;
-    throw new NotFoundException('No Products found.');
+    if (!(products.length > 0)) throw new NotFoundException('No Products found.');
+    return products;
   }
 
   async findOne(id: string): Promise<ProductDocument> {
