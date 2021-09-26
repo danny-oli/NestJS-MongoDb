@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product, ProductDocument } from './entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -75,7 +75,10 @@ export class ProductsService {
 
   async uploadProductPicture(id: string, file: Express.Multer.File): Promise<ProductDocument> {
     const product = await this.productModel.findById(id);
-    if (!product) throw new NotFoundException('Upload fail, product not found!');
+    if (!product) throw new NotFoundException('Upload failed, product not found!');
+
+    //Image type validation
+    if (!(file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg")) throw new BadRequestException('Update only allows types: .Png .Jpg .Jpeg');
 
     product.image_file_name = file.filename;
     return await this.productModel.findByIdAndUpdate(
