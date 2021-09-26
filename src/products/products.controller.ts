@@ -7,14 +7,17 @@ import {
   Param,
   Delete,
   UseGuards,
-  BadRequestException,
+  UseInterceptors,
+  UploadedFile,
+  Res
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-
 import { Product } from './entities/product.entity';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+
 
 
 
@@ -27,12 +30,7 @@ export class ProductsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
-    try {
-      return await this.productsService.create(createProductDto);
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
-
+    return await this.productsService.create(createProductDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -68,5 +66,19 @@ export class ProductsController {
     return this.productsService.deleteOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('/upload-image/:id')
+  @UseInterceptors(
+    FileInterceptor('product-image', { dest: './images/' })
+  )
+  async uploadPicture(@Param('id') id: string, @UploadedFile() file: Express.Multer.File): Promise<Product> {
+    return this.productsService.uploadProductPicture(id, file);
+  }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('upload-image/:id')
+  async getProductPicture(@Param('id') id: string, @Res() res) {
+    const product = await this.productsService.findOne(id);
+    return res.sendFile(product.image_file_name, { root: 'images' })
+  }
 }

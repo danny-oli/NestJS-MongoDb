@@ -14,8 +14,6 @@ export class User {
   username: string;
 
   @Prop()
-
-
   @Exclude({ toPlainOnly: true })
   password: string;
 }
