@@ -13,10 +13,4 @@ export class CreateIngredientDto {
 
   @IsInt()
   value: number;
-
-  @IsString()
-
-  created_at: string;
-  @IsString()
-  created_by: string;
 }

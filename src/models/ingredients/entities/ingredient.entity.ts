@@ -17,11 +17,8 @@ export class Ingredient {
   @Prop()
   value: number;
 
-  @Prop()
-  created_at: string;
-
-  @Prop()
-  created_by: string;
+  @Prop({ type: Date, default: Date.now })
+  created_at: Date;
 }
 
 export const IngredientSchema = SchemaFactory.createForClass(Ingredient);

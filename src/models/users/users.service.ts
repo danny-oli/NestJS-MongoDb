@@ -12,9 +12,10 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
 
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {
-    const userExist = await this.findByUsername(createUserDto.username)
-    if (userExist) throw new ConflictException(`username:${createUserDto.username} already exists!`);
     try {
+      const userExist = await this.findByUsername(createUserDto.username)
+      if (userExist) throw new ConflictException(`username:${createUserDto.username} already exists!`);
+
       const user = new this.userModel(createUserDto);
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(user.password, salt);
@@ -22,41 +23,62 @@ export class UsersService {
 
       return await user.save();
     } catch (error) {
-      throw new BadRequestException(`ErrorLog:${error}`)
+      throw error
     }
   }
 
   async findAll(): Promise<UserDocument[]> {
     try {
-      return await this.userModel.find();
+      const users = await this.userModel.find();
+      if (!users.length) throw new NotFoundException(`No Users found!`);
+      return
     } catch (error) {
-      throw new NotFoundException(`No Users found. Errorlog:${error}`);
+      throw error;
     }
   }
 
   async findOne(id: string): Promise<UserDocument> {
     try {
       const userFound = await this.userModel.findById(id);
-      if (!userFound) throw new NotFoundException();
+      if (!userFound) throw new NotFoundException(`User not found!`);
       return userFound;
     } catch (error) {
-      throw new NotFoundException(`No Users found. Errorlog:${error}`);
+      throw error;
     }
   }
 
   async findByUsername(username: string): Promise<UserDocument> {
-    return (await this.userModel.findOne({ username }).exec());
+    try {
+      const user = await this.userModel.findOne({ username }).exec();
+      if (!user) throw new NotFoundException(`User not found!`)
+      return user;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async updateOne(id: string, updateUserDto: UpdateUserDto): Promise<UserDocument> {
-    return await this.userModel.findByIdAndUpdate(
-      { _id: id },
-      { $set: updateUserDto },
-      { new: true },
-    );
+
+    try {
+      const userFound = await this.userModel.findById(id);
+      if (!userFound) throw new NotFoundException(`User not found to update!`);
+      return await this.userModel.findByIdAndUpdate(
+        { _id: id },
+        { $set: updateUserDto },
+        { new: true },
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async deleteOne(id: string): Promise<any> {
-    return await this.userModel.deleteOne({ _id: id }).exec();
+    try {
+      const userFound = await this.userModel.findById(id);
+      if (!userFound) throw new NotFoundException(`User not to be deleted!`);
+      return await this.userModel.deleteOne({ _id: id }).exec();
+    } catch (error) {
+      throw error;
+    }
   }
 }
