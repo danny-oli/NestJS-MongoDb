@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-import { IngredientsService } from '../ingredients/ingredients.service';
+import { IngredientsService } from '../models/ingredients/ingredients.service';
 
 @ValidatorConstraint({ name: 'IngredientExistsValidation', async: true })
 @Injectable() // this is needed in order to the class be injected into the module

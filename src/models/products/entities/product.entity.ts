@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose'
 import { IsArray, ValidateNested } from 'class-validator';
 
-import { Ingredient } from 'src/ingredients/entities/ingredient.entity';
+import { Ingredient } from '../../ingredients/entities/ingredient.entity';
 
 
 

@@ -1,5 +1,5 @@
 import { IsString, IsInt, IsArray } from 'class-validator';
-import { Ingredient } from 'src/ingredients/entities/ingredient.entity';
+import { Ingredient } from '../../ingredients/entities/ingredient.entity';
 
 export class CreateProductDto {
   @IsString()
