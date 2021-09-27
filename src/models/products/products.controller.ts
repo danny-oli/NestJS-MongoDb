@@ -40,6 +40,12 @@ export class ProductsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('/cost-report')
+  async costReport(): Promise<Product[]> {
+    return await this.productsService.getCostReport();
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Product> {
     return await this.productsService.findOne(id);

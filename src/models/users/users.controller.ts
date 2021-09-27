@@ -6,23 +6,22 @@ import {
   Patch,
   Param,
   Delete,
-  ConflictException,
+  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDocument } from './entities/user.entity';
 
-
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(
+    private readonly usersService: UsersService,
+  ) { }
 
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<UserDocument> {
-    const userExist = await this.usersService.findByUsername(createUserDto.username)
-    if (userExist) throw new ConflictException(`username:${createUserDto.username} already exists!`);
     return await this.usersService.create(createUserDto);
   }
 
@@ -43,6 +42,10 @@ export class UsersController {
 
   @Delete(':id')
   async deleteOne(@Param('id') id: string): Promise<any> {
-    return await this.usersService.deleteOne(id);
+    const userDeleted = await this.usersService.deleteOne(id);
+    if(!userDeleted) throw new BadRequestException(`Failed to delete user!`);
+
+    return { response: `User Successfully Deleted!`}
   }
+
 }

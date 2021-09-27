@@ -27,6 +27,9 @@ export class Product {
   @Prop()
   value: number;
 
+  @Prop()
+  cost: number;
+
   @Prop({ type: Date, default: Date.now })
   created_at: Date;
 }

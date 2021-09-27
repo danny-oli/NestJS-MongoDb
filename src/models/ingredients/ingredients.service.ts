@@ -5,6 +5,8 @@ import { Ingredient, IngredientDocument } from './entities/ingredient.entity';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 
+import mongoose = require('mongoose');
+
 @Injectable()
 export class IngredientsService {
   constructor(
@@ -14,8 +16,8 @@ export class IngredientsService {
 
   async create(createIngredientsDto: CreateIngredientDto): Promise<IngredientDocument> {
     try {
-      const hasIngredient = this.findByName(createIngredientsDto.name)
-      if (hasIngredient) throw new ConflictException(`ingredient:${createIngredientsDto.name} already exists!`);
+      const hasProduct = await this.ingredientModel.findOne({ name: createIngredientsDto.name })
+      if (hasProduct) throw new BadRequestException(`Ingerdient: ${createIngredientsDto.name} already exists!`);
       const user = new this.ingredientModel(createIngredientsDto);
       return await user.save();
     } catch (error) {
@@ -35,6 +37,7 @@ export class IngredientsService {
 
   async findOne(id: string): Promise<IngredientDocument> {
     try {
+      if(!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
       const hasIngredient = await this.ingredientModel.findById(id);
       if (!hasIngredient) throw new NotFoundException(`Ingredient was not found!`);
       return hasIngredient;
@@ -56,6 +59,7 @@ export class IngredientsService {
 
   async updateOne(id: string, updateIngredientDto: UpdateIngredientDto): Promise<IngredientDocument> {
     try {
+      if(!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
       const hasIngredient = await this.ingredientModel.findById(id);
       if (!hasIngredient) throw new NotFoundException(`Ingredient not found to update!`);
       return await this.ingredientModel.findByIdAndUpdate(
@@ -71,12 +75,17 @@ export class IngredientsService {
   async deleteOne(id: string): Promise<any> {
 
     try {
+      if(!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
       const hasIngredient = await this.ingredientModel.findById(id);
       if (!hasIngredient) throw new NotFoundException(`Ingredient not to be deleted!`);
       return await this.ingredientModel.deleteOne({ _id: id }).exec();
     } catch (error) {
       throw error;
     }
+  }
+
+  validateObjectId(id: string) {
+    return mongoose.Types.ObjectId.isValid(id);
   }
 
 

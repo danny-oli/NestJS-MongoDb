@@ -1,4 +1,4 @@
-import { IsString, IsInt, IsArray } from 'class-validator';
+import { IsString, IsArray, IsNumber } from 'class-validator';
 import { Ingredient } from '../../ingredients/entities/ingredient.entity';
 
 export class CreateProductDto {
@@ -11,6 +11,9 @@ export class CreateProductDto {
   @IsString()
   image_file_name: string;
   
-  @IsInt()
+  @IsNumber()
   value: number;
+
+  @IsNumber()
+  cost: number;
 }
