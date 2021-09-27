@@ -1,4 +1,3 @@
-import { RecepiesModule } from './models/recepies/recepies.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MulterModule } from '@nestjs/platform-express';
@@ -8,6 +7,8 @@ import { ConfigService } from './config/config.service';
 import { IngredientsModule } from './models/ingredients/ingredients.module';
 import { ProductsModule } from './models/products/products.module';
 import { UsersModule } from './models/users/users.module';
+import { RecepiesModule } from './models/recepies/recepies.module';
+
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UsersModule } from './models/users/users.module';
     UsersModule,
     IngredientsModule,
     ProductsModule,
+    RecepiesModule
   ],
 })
 export class AppModule { }

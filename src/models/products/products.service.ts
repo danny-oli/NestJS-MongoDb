@@ -63,7 +63,7 @@ export class ProductsService {
             path: 'ingredient'
           }
         }
-      );;
+      );
       if (!product) throw new NotFoundException('Product not found!');
       product.recepies.forEach(recepies => {
         product.cost += recepies.ingredient.value

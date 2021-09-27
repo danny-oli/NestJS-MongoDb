@@ -33,31 +33,31 @@ import {
       return await this.recepiesService.create(createRecepiDto);
     }
   
-    // @UseGuards(JwtAuthGuard)
-    // @Get()
-    // async findAll(): Promise<Recepi[]> {
-    //   return await this.recepiesService.findAll();
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Get()
+    async findAll(): Promise<Recepi[]> {
+      return await this.recepiesService.findAll();
+    }
 
-    // @UseGuards(JwtAuthGuard)
-    // @Get(':id')
-    // async findOne(@Param('id') id: string): Promise<Recepi> {
-    //   return await this.recepiesService.findOne(id);
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Get(':id')
+    async findOne(@Param('id') id: string): Promise<Recepi> {
+      return await this.recepiesService.findOne(id);
+    }
   
-    // @UseGuards(JwtAuthGuard)
-    // @Patch(':id')
-    // async updateOne(
-    //   @Param('id') id: string,
-    //   @Body() updateRecepiesDto: UpdateRecepiDto,
-    // ): Promise<Recepi> {
-    //   return await this.recepiesService.updateOne(id, updateRecepiesDto);
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Patch(':id')
+    async updateOne(
+      @Param('id') id: string,
+      @Body() updateRecepiesDto: UpdateRecepiDto,
+    ): Promise<Recepi> {
+      return await this.recepiesService.updateOne(id, updateRecepiesDto);
+    }
   
-    // @UseGuards(JwtAuthGuard)
-    // @Delete(':id')
-    // async deleteOne(@Param('id') id: string): Promise<any> {
-    //   return this.recepiesService.deleteOne(id);
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Delete(':id')
+    async deleteOne(@Param('id') id: string): Promise<any> {
+      return this.recepiesService.deleteOne(id);
+    }
   }
   
