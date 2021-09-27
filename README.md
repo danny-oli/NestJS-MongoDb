@@ -26,10 +26,11 @@
 
 This project is made with[Nest](https://github.com/nestjs/nest) framework!
 
-** Important **
+** Important if you are reading in Sep/27 **
 - Unfortunately couldn't validate if  Recepi._id exists before adding to mongo in time. 
 - You need to first insert data to database in order to populate the reference fields with their _id
 - Fields are: product.recepies[] and recepies.ingredient
+- don't forget to create the .env file :)
 
 Feartures:
 - Ingredients, Products, Recipies and Users CRUD
