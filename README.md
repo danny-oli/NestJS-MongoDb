@@ -36,6 +36,12 @@ Feartures:
 - File type filtering
 
 
+Nice to Mention:
+- Only 1 week of study and so much done with [Nest](https://github.com/nestjs/nest) framework!
+- Learned alot about Mongodb relationships
+- Could learn more about the validation methods like @Pipes decorator
+- First contact with Typescript :) 
+
 ## Installation
 
 ```bash
