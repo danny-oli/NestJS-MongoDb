@@ -9,7 +9,8 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
-  Res
+  Res,
+  NotFoundException
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -61,13 +62,6 @@ export class ProductsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/cost-report')
-  async costReport(): Promise<Product[]> {
-    return await this.productsService.getCostReport();
-  }
-
-
-  @UseGuards(JwtAuthGuard)
   @Get('/available/:id')
   async productAvailable(@Param('id') id: string): Promise<Boolean> {
     return await this.productsService.productAvailable(id);
@@ -87,6 +81,7 @@ export class ProductsController {
   @Get('upload-image/:id')
   async getProductPicture(@Param('id') id: string, @Res() res) {
     const product = await this.productsService.findOne(id);
+    if (!product.image_file_name) throw new NotFoundException(`Image not found for this Product!`)
     return res.sendFile(product.image_file_name, { root: 'images' })
   }
 }

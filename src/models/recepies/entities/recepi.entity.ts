@@ -8,7 +8,7 @@ export type RecepiDocument = Recepi & Document;
 @Schema()
 export class Recepi {
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }])
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' })
   ingredient: Ingredient;
 
   @Prop()

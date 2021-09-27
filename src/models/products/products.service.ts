@@ -56,8 +56,18 @@ export class ProductsService {
   async findOne(id: string): Promise<ProductDocument> {
     try {
       if (!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
-      const product: ProductDocument = await this.productModel.findById(id);
+      const product: ProductDocument = await this.productModel.findById(id).populate(
+        {
+          path: 'recepies',
+          populate: {
+            path: 'ingredient'
+          }
+        }
+      );;
       if (!product) throw new NotFoundException('Product not found!');
+      product.recepies.forEach(recepies => {
+        product.cost += recepies.ingredient.value
+      });
       return product
     } catch (error) {
       throw error;
@@ -106,7 +116,14 @@ export class ProductsService {
   async productAvailable(id: string): Promise<any> {
     try {
       if (!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
-      const product: ProductDocument = await this.productModel.findById(id).populate('recepies').exec();
+      const product: ProductDocument = await this.productModel.findById(id).populate(
+        {
+          path: 'recepies',
+          populate: {
+            path: 'ingredient'
+          }
+        }
+      ).exec();
       if (!product) throw new NotFoundException(`Product not found!`);
       var productAvailable: Boolean = false;
       product.recepies.forEach(recepi => {
@@ -136,33 +153,6 @@ export class ProductsService {
         { new: true });
     }
     catch (error) {
-      throw error;
-    }
-  }
-
-
-  async getCostReport(): Promise<any> {
-    try {
-      const products: ProductDocument[] = await this.productModel.find().populate(
-        {
-          path: 'recepies',
-          populate: {
-            path: 'ingredient'
-          }
-        }
-      );
-      if (!(products.length)) throw new NotFoundException('No Products found.');
-      let totalProductsCost = 0;
-      products.forEach(product => {
-        product.recepies.forEach(recepies => {
-          product.cost += recepies.ingredient.value
-        })
-      });
-      return {
-        totalProductsCost: `The cost of all the products is: ${totalProductsCost}`,
-        products: products,
-      };
-    } catch (error) {
       throw error;
     }
   }

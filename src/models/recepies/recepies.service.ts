@@ -47,7 +47,7 @@ export class RecepiesService {
 
     //   async findOne(id: string): Promise<RecepiDocument> {
     //     try {
-    //       if (!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
+    //       // if (!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
     //       const product: RecepiDocument = await this.recepiModel.findById(id);
     //       if (!product) throw new NotFoundException('Product not found!');
     //       return product
@@ -70,7 +70,7 @@ export class RecepiesService {
 
     //   async updateOne(id: string, updaterecepiDto: UpdateRecepiDto): Promise<RecepiDocument> {
     //     try {
-    //       if (!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
+    //       // if (!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
     //       const hasProduct: RecepiDocument = await this.recepiModel.findById(id);
     //       if (!hasProduct) throw new NotFoundException(`Prodfuct not found to update!`);
     //       return await this.recepiModel.findByIdAndUpdate(
@@ -86,7 +86,7 @@ export class RecepiesService {
 
     //   async deleteOne(id: string): Promise<any> {
     //     try {
-    //       if (!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
+    //       // if (!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
     //       const product: RecepiDocument = await this.recepiModel.findById(id);
     //       if (!product) throw new NotFoundException(`Procuct not found to be deleted! `)
     //       return await this.recepiModel.deleteOne({ _id: id }).exec();
