@@ -1,3 +1,4 @@
+import { RecepiesModule } from './models/recepies/recepies.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MulterModule } from '@nestjs/platform-express';
@@ -10,6 +11,7 @@ import { UsersModule } from './models/users/users.module';
 
 @Module({
   imports: [
+    RecepiesModule,
     ConfigModule,
     MongooseModule.forRootAsync({
       inject: [ConfigService],

@@ -1,12 +1,12 @@
 import { IsString, IsArray, IsNumber } from 'class-validator';
-import { Ingredient } from '../../ingredients/entities/ingredient.entity';
+import { Recepi } from 'src/models/recepies/entities/recepi.entity';
 
 export class CreateProductDto {
   @IsString()
   name: string;
 
   @IsArray()
-  ingredients: Ingredient[];
+  recepies: Recepi[];
 
   @IsString()
   image_file_name: string;

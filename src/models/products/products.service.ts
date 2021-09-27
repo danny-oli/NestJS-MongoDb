@@ -20,7 +20,7 @@ export class ProductsService {
       if (hasProduct) throw new BadRequestException(`Procuct: ${createProductDto.name} already exists!`);
       const product = new this.productModel(createProductDto);
       // const hasIngredient = await this.ingredientModel.findOne(createProductDto.ingredients)
-      await product.populate('ingredients').execPopulate();
+      await product.populate('recepies', 'ingredients').execPopulate();
       await product.save();
       return product;
     } catch (error) {
@@ -31,11 +31,18 @@ export class ProductsService {
 
   async findAll(): Promise<ProductDocument[]> {
     try {
-      const products: ProductDocument[] = await this.productModel.find().populate('ingredients');
+      const products: ProductDocument[] = await this.productModel.find().populate(
+        {
+          path: 'recepies',
+          populate: {
+            path: 'ingredient'
+          }
+        }
+      );
       if (!(products.length)) throw new NotFoundException('No Products found.');
       products.forEach(product => {
-        product.ingredients.forEach(ingredient => {
-          product.cost += ingredient.value
+        product.recepies.forEach(recepies => {
+          product.cost += recepies.ingredient.value
         })
       });
       return products;
@@ -99,11 +106,11 @@ export class ProductsService {
   async productAvailable(id: string): Promise<any> {
     try {
       if (!this.validateObjectId(id)) throw new BadRequestException(`Invalid ObjectId sent!`);
-      const product: ProductDocument = await this.productModel.findById(id).populate('ingredients').exec();
+      const product: ProductDocument = await this.productModel.findById(id).populate('recepies').exec();
       if (!product) throw new NotFoundException(`Product not found!`);
       var productAvailable: Boolean = false;
-      product.ingredients.forEach(ingredient => {
-        ingredient.quantity > 0 ? productAvailable = true : productAvailable = false;
+      product.recepies.forEach(recepi => {
+        recepi.ingredient.quantity > 0 ? productAvailable = true : productAvailable = false;
       });
 
       return { response: { product: product.name, available: productAvailable } };
@@ -136,15 +143,21 @@ export class ProductsService {
 
   async getCostReport(): Promise<any> {
     try {
-      const products = await this.findAll();
+      const products: ProductDocument[] = await this.productModel.find().populate(
+        {
+          path: 'recepies',
+          populate: {
+            path: 'ingredient'
+          }
+        }
+      );
+      if (!(products.length)) throw new NotFoundException('No Products found.');
       let totalProductsCost = 0;
-      if (!products) throw new NotFoundException("No Products found!");
-      products.forEach((product) => {
-        product.ingredients.forEach(ingredient => {
-          totalProductsCost += ingredient.value;
+      products.forEach(product => {
+        product.recepies.forEach(recepies => {
+          product.cost += recepies.ingredient.value
         })
-
-      })
+      });
       return {
         totalProductsCost: `The cost of all the products is: ${totalProductsCost}`,
         products: products,

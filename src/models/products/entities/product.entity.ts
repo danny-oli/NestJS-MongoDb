@@ -1,11 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ValidateNested } from 'class-validator';
+import { Recepi } from 'src/models/recepies/entities/recepi.entity';
+
 import * as mongoose from 'mongoose'
-import { IsArray, ValidateNested } from 'class-validator';
-
-import { Ingredient } from '../../ingredients/entities/ingredient.entity';
-
-
-
 
 export type ProductDocument = Product & Document;
 
@@ -17,12 +14,11 @@ export class Product {
   @Prop()
   image_file_name: string;
 
-  @IsArray()
   //Validate all nested objects ObjectIds
   @ValidateNested({ each: true })
   //Indicates that ingredients is a array of Ingredients that references IngredientModel
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }])
-  ingredients: Ingredient[];
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Recepi' }])
+  recepies: Recepi[];
 
   @Prop()
   value: number;
