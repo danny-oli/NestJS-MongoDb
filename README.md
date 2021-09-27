@@ -24,7 +24,17 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is made with[Nest](https://github.com/nestjs/nest) framework!
+
+Feartures:
+- Ingredients, Products, Recipies and Users CRUD
+- JWT Authorization to keep the routes accessible only for those with a valid token
+- Validation Route to confirm that the product is really available and it's price based on it's recepies
+- Password hash with bcrypt package
+- Validation fields realized with native class-validators
+- File upload using Multer
+- File type filtering
+
 
 ## Installation
 
@@ -45,24 +55,13 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Insomnia Routes
 
-```bash
-# unit tests
-$ npm run test
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Nest.JS%20-%20Mongodb&uri=https%3A%2F%2Fraw.githubusercontent.com%2Fdanny-oli%2Fnest.js-mongodb%2Fmaster%2Fsrc%2Finsomnia%2Fexport.json)
 
-# e2e tests
-$ npm run test:e2e
 
-# test coverage
-$ npm run test:cov
-```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
+## Stay in touch with Nest Team!
 
 - Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
 - Website - [https://nestjs.com](https://nestjs.com/)
