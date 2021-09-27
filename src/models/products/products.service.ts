@@ -42,7 +42,7 @@ export class ProductsService {
       if (!(products.length)) throw new NotFoundException('No Products found.');
       products.forEach(product => {
         product.recepies.forEach(recepies => {
-          product.cost += recepies.ingredient.value
+          product.cost += recepies.ingredient.value * recepies.quantity
         })
       });
       return products;
