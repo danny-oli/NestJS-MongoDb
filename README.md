@@ -26,11 +26,10 @@
 
 This project is made with[Nest](https://github.com/nestjs/nest) framework!
 
-** Important if you are reading in Sep/27 **
-- Unfortunately couldn't validate if  Recepi._id exists before adding to mongo in time. 
-- You need to first insert data to database in order to populate the reference fields with their _id
-- Fields are: product.recepies[] and recepies.ingredient
-- don't forget to create the .env file :)
+A quick Nest project where you are able to understant how relationships works using Mongoose. 
+A Software to control a store inventory. To be able to create a new Product, you must create a Ingredient, and then a Recepi with contains the amout used for this Product.
+
+
 
 Feartures:
 - Ingredients, Products, Recipies and Users CRUD
